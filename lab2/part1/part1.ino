@@ -1,7 +1,7 @@
 #include<avr/io.h>
 
 #define BOARD_LED 13
-#define RED 8
+#define RED 7
 #define GREEN 9
 #define BLUE 10
 
