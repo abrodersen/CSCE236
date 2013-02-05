@@ -11,7 +11,7 @@ int lastButtonState = LOW;   // the previous reading from the input pin
 // the following variables are long's because the time, measured in miliseconds,
 // will quickly become a bigger number than can be stored in an int.
 uint32_t lastDebounceTime = 0;  // the last time the output pin was toggled
-uint16_t debounceDelay = 100;    // the debounce time; increase if the output flickers
+uint32_t debounceDelay = 100;    // the debounce time; increase if the output flickers
 
 boolean fallingEdge = false;
 
@@ -32,7 +32,7 @@ void setup() {
    
    
 }
- int count = 0;
+uint8_t count = 0;
 void loop() {
   // read the state of the switch into a local variable:
   int reading = digitalRead(buttonPin);
@@ -48,12 +48,19 @@ void loop() {
       // reset the debouncing timer
       lastDebounceTime = millis();
       fallingEdge = true; // Set variable that monitor falling edge
-      TCNT1H = 0; // Set TCNT1 and ICR1 to 0
-      TCNT1L = 0;
-      ICR1 = 0;
+      
     }
  
-    
+  if(ICR1 != 0)
+  {
+    Serial.print("Bounce of ");
+    uint32_t bounce = ICR1;
+    Serial.print(bounce * 64); //We must use this level of prescaler because bounce values are consistently above 16000
+    Serial.println(" microseconds.");
+    TCNT1H = 0; // Set TCNT1 and ICR1 to 0
+    TCNT1L = 0;
+    ICR1 = 0; 
+  }
   
   if ((millis() - lastDebounceTime) > debounceDelay) {
     // whatever the reading is at, it's been there for longer
@@ -63,9 +70,7 @@ void loop() {
       fallingEdge = false;
       Serial.println(++count);
       if(ICR1 != 0){ // If there was a bounce
-       Serial.print("Bounce of ");
-       Serial.print(ICR1 * 64);
-       Serial.println(" microseconds.");
+       
       }
     }
   }
