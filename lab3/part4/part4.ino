@@ -9,6 +9,11 @@
 #define FORWARD_VELOCITY ((uint8_t)75)
 #define AFT_VELOCITY ((uint8_t)105)
 
+#define TASK_LIST_SIZE 20
+
+Transition taskList[TASK_LIST_SIZE];
+
+
 
 uint8_t count = 0;
 
@@ -63,34 +68,6 @@ void loop()
     Serial.print("Count: ");
     Serial.println(count);
   }
-  
-  /*if(Serial.read() == 'l')
-  {
-    rightWheel.write(80);
-    delay(1000);
-    rightWheel.write(90);
-  }
-  else if(Serial.read() == 'r')
-  {
-    
-  }*/
-  /*turnWheel(&leftWheel, LEFT, FORWARD);
-  delay(2000);
-  turnWheel(&leftWheel, LEFT, NONE);
-  delay(2000);
-  turnWheel(&leftWheel, LEFT, AFT);
-  delay(2000);
-  turnWheel(&leftWheel, LEFT, NONE);
-  delay(2000);
-  
-  turnWheel(&rightWheel, RIGHT, FORWARD);
-  delay(2000);
-  turnWheel(&rightWheel, RIGHT, NONE);
-  delay(2000);
-  turnWheel(&rightWheel, RIGHT, AFT);
-  delay(2000);
-  turnWheel(&rightWheel, RIGHT, NONE);
-  delay(2000);*/
 }
 
 void initialize(Wheel *wheel)

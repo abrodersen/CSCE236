@@ -1,19 +1,19 @@
+#include "wheel.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct {
-  Servo motor;
-  uint8_t pin;
-  uint8_t state;
-  int8_t tuneValue;
-  bool reversed;
-} Wheel;
+#ifndef data_h
+#define data_h
+
 
 typedef struct {
   Wheel *wheel;
   uint8_t direction;
 } Transition;
+
+#endif
 
 #ifdef __cplusplus
 }
