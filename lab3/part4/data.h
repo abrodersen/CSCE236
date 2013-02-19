@@ -10,6 +10,11 @@ typedef struct {
   bool reversed;
 } Wheel;
 
+typedef struct {
+  Wheel *wheel;
+  uint8_t direction;
+} Transition;
+
 #ifdef __cplusplus
 }
 #endif

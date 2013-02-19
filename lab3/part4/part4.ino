@@ -1,10 +1,6 @@
 #include <Servo.h>
 #include "data.h"
 
-
-#define LEFT 0
-#define RIGHT 1
-
 #define NONE 0
 #define FORWARD 1
 #define AFT 2
@@ -13,8 +9,6 @@
 #define FORWARD_VELOCITY ((uint8_t)75)
 #define AFT_VELOCITY ((uint8_t)105)
 
-#define LEFT_TUNE ((int8_t)0)
-#define RIGHT_TUNE ((int8_t)-3)
 
 uint8_t count = 0;
 
