@@ -46,15 +46,23 @@ void loop()
     char val = Serial.read();
     if(val == 'u')
     {
-      right.motor.write(NO_VELOCITY + ++count);
+      //right.motor.write(NO_VELOCITY + ++count);
+      count++;
     }
     else if(val == 'd')
     {
-      right.motor.write(NO_VELOCITY + --count);
+      //right.motor.write(NO_VELOCITY + --count);
+      count--;
     }
     else if(val == 'g')
     {
      turnWheel(&right, FORWARD);
+     delay(count * 100);
+     turnWheel(&right, NONE); 
+    }
+    else if(val == 'b')
+    {
+     turnWheel(&right, AFT);
      delay(count * 100);
      turnWheel(&right, NONE); 
     }
@@ -116,7 +124,6 @@ void turnWheel(Wheel *wheel, uint8_t direction)
   {
     newState = NO_VELOCITY + wheel->tuneValue; 
   }
-  Serial.println(newState);
   wheel->motor.write(newState);
   wheel->state = direction;
 }
