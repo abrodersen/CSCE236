@@ -48,7 +48,18 @@ void setup() {
   LEDInit();
   pinMode(BUTTON, INPUT);  
   //Enable pullup  
-  digitalWrite(BUTTON, HIGH);     
+  digitalWrite(BUTTON, HIGH);  
+  
+  TCCR1A = 0; //Clear register
+  TCCR1A |= (1 << WGM11);
+  TCCR1A |=   (1 << COM1B1) | (0 << COM1B0); //Enable fast PWM
+  TCCR1B = 0;
+  TCCR1B |= (1 << WGM13) | (1 << WGM12);
+  TCCR1B = (1 << CS12) | (0 << CS11) | (0 << CS10); //Use clk/256 prescaler
+  TCCR1C = 0;
+  
+  ICR1 = 64;
+  OCR1B = 10;
     
   Serial.println("Finished setup");
 }
@@ -58,15 +69,20 @@ void loop() {
   //Button Pressed
   if((digitalRead(BUTTON) == LOW)){
     //Turn LED off briefly to dim
-    digitalWrite(RED,LOW);
-    delay(18);   
+    OCR1B = 16;
+  }
+  else
+  {
+   OCR1B = 63; 
   }
   
   //Turn on LED
-  digitalWrite(RED,HIGH);
+  //digitalWrite(RED,HIGH);
   //Delay here so that when the button is pressed there
   //will be some time that the LED is kept on
-  delay(2);
+  //delay(10);
+  
+  //delay(100);
 }
 
 
