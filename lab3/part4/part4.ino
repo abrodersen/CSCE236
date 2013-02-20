@@ -64,10 +64,10 @@ void setup()
   addTask(&taskList, &right, FORWARD, 100);
   addTask(&taskList, &left, NONE, 2100);
   addTask(&taskList, &right, NONE, 2100);
-  addTask(&taskList, &left, AFT, 2200);
-  addTask(&taskList, &right, AFT, 2200);
-  addTask(&taskList, &left, NONE, 4200);
-  addTask(&taskList, &right, NONE, 4200);
+  //addTask(&taskList, &left, AFT, 1200);
+  addTask(&taskList, &right, FORWARD, 2200);
+  //addTask(&taskList, &left, NONE, 4200);
+  addTask(&taskList, &right, NONE, 4000);
     
   for(int i = 0; i < taskList.numTasks; i++)
   {
@@ -147,6 +147,9 @@ void loop()
         adjustingDirection = NONE;
         Serial.println("Stop velocity now adjustable.");
         break;
+      case 'h':
+        tasksEnabled = false;
+        break;
       case 'd':
         value = -1;
       case 'u':
@@ -161,9 +164,9 @@ void loop()
   currentTaskTime = millis();
 }
 
-uint8_t updateAdjustment(Wheel* wheel, uint8_t direction, int8_t step)
+int8_t updateAdjustment(Wheel* wheel, uint8_t direction, int8_t step)
 {
-  uint8_t newValue = 0;
+  int8_t newValue = 0;
   if(direction == FORWARD)
   {
     newValue = (wheel->forwardTuneValue += step);
@@ -196,8 +199,6 @@ void processTasks(TaskList *list, uint16_t previousTime, uint16_t currentTime)
         if(list->times[i] < currentAdjusted && list->times[i] >= previousAdjusted)
         {
           turnWheel(list->wheels[i], list->directions[i]);
-          Serial.print("New direction: ");
-          Serial.println(list->directions[i]);
         }
       }
       else
@@ -205,8 +206,6 @@ void processTasks(TaskList *list, uint16_t previousTime, uint16_t currentTime)
         if(list->times[i] < currentAdjusted || list->times[i] >= previousAdjusted)
         {
           turnWheel(list->wheels[i], list->directions[i]);
-          Serial.print("New direction: ");
-          Serial.println(list->directions[i]);
         }
       }
     }
