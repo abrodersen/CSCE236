@@ -178,6 +178,7 @@ uint8_t updateAdjustment(Wheel* wheel, uint8_t direction, int8_t step)
   }
   
   writeWheelCalibration(wheel);
+  turnWheel(wheel, wheel->state);
   return newValue;
 }
 
