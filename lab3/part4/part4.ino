@@ -86,7 +86,7 @@ uint16_t previousTaskTime = 0;
 uint16_t currentTaskTime = 0;
 
 Wheel *currentAdjustable = &right;
-boolean adjustingForward = true;
+uint8_t adjustingDirection = NONE;
 
 void loop()
 {
@@ -124,7 +124,7 @@ void loop()
   if(Serial.available())
   {
     char k = Serial.read();
-    int8_t value = 0;
+    int8_t value = 1;
     switch(k)
     {
       case 'l':
@@ -136,38 +136,22 @@ void loop()
         Serial.println("Right wheel now adjustable.");
         break;
       case 'f':
-        adjustingForward = true;
+        adjustingDirection = FORWARD;
         Serial.println("Forward velocity now adjustable.");
         break;
       case 'a':
-        adjustingForward = false;
+        adjustingDirection = AFT;
         Serial.println("Aft velocity now adjustable.");
         break;
-      case 'u':
-        if(adjustingForward)
-        {
-          value = ++(currentAdjustable->forwardTuneValue);
-        }
-        else
-        {
-          value = ++(currentAdjustable->aftTuneValue);
-        }
-        Serial.print("Current adjustment: ");
-        Serial.println(value);
-        writeWheelCalibration(currentAdjustable);
+      case 's':
+        adjustingDirection = NONE;
+        Serial.println("Stop velocity now adjustable.");
         break;
       case 'd':
-        if(adjustingForward)
-        {
-          value = --(currentAdjustable->forwardTuneValue);
-        }
-        else
-        {
-          value = --(currentAdjustable->aftTuneValue);
-        }
-        Serial.print("Current adjustment: ");
-        Serial.println(value);
-        writeWheelCalibration(currentAdjustable);
+        value = -1;
+      case 'u':
+        Serial.print("New value: ");
+        Serial.println(updateAdjustment(currentAdjustable, adjustingDirection, value));
         break;
         
     }
@@ -175,17 +159,26 @@ void loop()
   
   previousTaskTime = currentTaskTime;
   currentTaskTime = millis();
+}
+
+uint8_t updateAdjustment(Wheel* wheel, uint8_t direction, int8_t step)
+{
+  uint8_t newValue = 0;
+  if(direction == FORWARD)
+  {
+    newValue = (wheel->forwardTuneValue += step);
+  }
+  else if(direction == AFT)
+  {
+    newValue = (wheel->aftTuneValue += step);
+  }
+  else
+  {
+    newValue = (wheel->noneTuneValue += step);
+  }
   
-  /*turnWheel(&right, FORWARD);
-  delay(1500);
-  turnWheel(&right, NONE);
-  delay(100);
-  turnWheel(&right, FORWARD);
-  turnWheel(&left, FORWARD);
-  delay(2000);
-  turnWheel(&right, NONE);
-  turnWheel(&left, NONE);
-  delay(100);*/
+  writeWheelCalibration(wheel);
+  return newValue;
 }
 
 void processTasks(TaskList *list, uint16_t previousTime, uint16_t currentTime)
