@@ -11,7 +11,14 @@ extern "C" {
 typedef struct {
   Wheel *wheel;
   uint8_t direction;
-} Transition;
+} Task;
+
+typedef struct {
+  Wheel *wheels[TASK_LIST_SIZE];
+  uint8_t directions[TASK_LIST_SIZE];
+  uint16_t times[TASK_LIST_SIZE];
+  uint8_t numTasks;
+} TaskList;
 
 #endif
 

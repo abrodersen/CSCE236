@@ -9,7 +9,9 @@ typedef struct {
   Servo motor;
   uint8_t pin;
   uint8_t state;
-  int8_t tuneValue;
+  int8_t forwardTuneValue;
+  int8_t aftTuneValue;
+  int8_t noneTuneValue;
   bool reversed;
 } Wheel;
 
