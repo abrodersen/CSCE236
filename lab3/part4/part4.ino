@@ -67,7 +67,7 @@ void setup()
   //addTask(&taskList, &left, AFT, 1200);
   addTask(&taskList, &right, FORWARD, 2200);
   //addTask(&taskList, &left, NONE, 4200);
-  addTask(&taskList, &right, NONE, 4000);
+  addTask(&taskList, &right, NONE, 3800);
     
   for(int i = 0; i < taskList.numTasks; i++)
   {
